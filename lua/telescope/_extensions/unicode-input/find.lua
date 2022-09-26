@@ -8,7 +8,7 @@ local action_state = require("telescope.actions.state")
 local entry_display = require("telescope.pickers.entry_display")
 local results = require("telescope-unicode-input").opts.unicode
 
-vim.inspect(results)
+print(vim.inspect(results))
 
 M.search = function(telescope_opts)
   local displayer = entry_display.create({
