@@ -3,6 +3,8 @@
 [Telescope](https://github.com/nvim-telescope/telescope.nvim) extension to type
 unicode (or any kind of) symbols easily. Perfect for typing agda code.
 
+![Demo screenshot](resources/demo-screenshot.png)
+
 ## Installation
 
 Using [packer.nvim](https://github.com/wbthomason/packer.nvim):
