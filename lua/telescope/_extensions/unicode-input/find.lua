@@ -34,7 +34,7 @@ M.search = function(telescope_opts)
         entry_maker = function(entry)
           return {
             value = entry,
-            display = make_display,
+            display = make_display(entry),
             ordinal = entry.key .. entry.name,
           }
         end,
