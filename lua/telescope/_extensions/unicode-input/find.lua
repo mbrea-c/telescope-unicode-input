@@ -6,10 +6,24 @@ local sorters = require("telescope.sorters")
 local actions = require("telescope.actions")
 local action_state = require("telescope.actions.state")
 local entry_display = require("telescope.pickers.entry_display")
-local previewers = require("telescope.previewers")
 local results = require("telescope-unicode-input").opts.unicode
 
 M.search = function(telescope_opts)
+  local displayer = entry_display.create({
+    separator = " ",
+    items = {
+      { width = 40 },
+      { width = 18 },
+      { remaining = true },
+    },
+  })
+  local make_display = function(entry)
+    return displayer({
+      entry.value,
+      entry.key,
+      entry.name,
+    })
+  end
   pickers
     .new(telescope_opts, {
       prompt_title = "telescope-agda-symbols",
@@ -18,7 +32,7 @@ M.search = function(telescope_opts)
         entry_maker = function(entry)
           return {
             value = entry,
-            display = entry.value .. "   " .. entry.key .. "   " .. entry.name,
+            display = make_display,
             ordinal = entry.key .. entry.name,
           }
         end,
