@@ -50,3 +50,39 @@ return require("packer").startup(function(use)
   })
 end
 ```
+
+## Usage examples
+
+### agda
+
+If writing agda, it may be useful to bind this plugin to a key in insert mode.
+For example, adding this in your `init.lua` will load this extension and bind
+its action to `\\` on insert mode when editing lua files:
+
+```lua
+local function setup_agda_input()
+  require("telescope").load_extension("unicode-input")
+  vim.keymap.set("i", "\\", function()
+    vim.cmd("Telescope unicode-input find")
+  end, {})
+end
+
+local agda_augroup = vim.api.nvim_create_augroup("AgdaUnicodeInput", {})
+vim.api.nvim_clear_autocmds({ group = agda_augroup })
+vim.api.nvim_create_autocmd("Filetype", {
+  group = agda_augroup,
+  pattern = "agda",
+  callback = setup_agda_input,
+})
+```
+
+The `agda` filetype may not be recognized by neovim by default. If so, add this
+to your `init.lua`:
+
+```lua
+vim.filetype.add({
+  extension = {
+    agda = "agda",
+  },
+})
+```
