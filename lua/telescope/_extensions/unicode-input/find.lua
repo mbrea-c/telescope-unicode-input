@@ -39,7 +39,7 @@ M.search = function(telescope_opts)
           }
         end,
       }),
-      sorter = sorters.get_fzy_sorter(telescope_opts),
+      sorter = sorters.get_generic_fuzzy_sorter(telescope_opts),
       attach_mappings = function(prompt_bufnr, _)
         actions.select_default:replace(function()
           local selection = action_state.get_selected_entry()
