@@ -52,15 +52,12 @@ M.search = function(telescope_opts)
         }),
         sorter = conf.generic_sorter(telescope_opts),
         attach_mappings = function(prompt_bufnr, _)
-          actions.select_default:replace(actions.insert_symbol_i)
-          --actions.select_default:replace(function()
-          --local selection = action_state.get_selected_entry()
-          --actions.close(prompt_bufnr)
-          --local output = selection.value
-          --local pos = vim.api.nvim_win_get_cursor(0)
-          --vim.api.nvim_buf_set_text(0, pos[1] - 1, pos[2], pos[1] - 1, pos[2], { output })
-          --vim.api.nvim_win_set_cursor(0, { pos[1], pos[2] + 2 })
-          --end)
+          actions.select_default:replace(function()
+            actions.close(prompt_bufnr)
+            local selection = action_state.get_selected_entry()
+            local output = selection.value
+            vim.api.nvim_put({ output }, "", false, true)
+          end)
           return true
         end,
       })
