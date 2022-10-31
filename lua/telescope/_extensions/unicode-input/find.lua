@@ -2,7 +2,6 @@ local M = {}
 
 local pickers = require("telescope.pickers")
 local finders = require("telescope.finders")
---local sorters = require("telescope.sorters")
 local actions = require("telescope.actions")
 local conf = require("telescope.config").values
 local action_state = require("telescope.actions.state")
@@ -20,6 +19,7 @@ local sample_unicode = {
 
 M.search = function(telescope_opts)
   telescope_opts = telescope_opts or {}
+  local initial_mode = vim.fn.mode()
   local displayer = entry_display.create({
     separator = " ",
     items = {
@@ -36,32 +36,35 @@ M.search = function(telescope_opts)
     })
   end
   pickers
-      .new(telescope_opts, {
-        prompt_title = "telescope-agda-symbols",
-        finder = finders.new_table({
-          results = results,
-          entry_maker = function(result)
-            return {
-              value = result.value,
-              name = result.name,
-              key = result.key,
-              display = make_display,
-              ordinal = result.key,
-            }
-          end,
-        }),
-        sorter = conf.generic_sorter(telescope_opts),
-        attach_mappings = function(prompt_bufnr, _)
-          actions.select_default:replace(function()
-            actions.close(prompt_bufnr)
-            local selection = action_state.get_selected_entry()
-            local output = selection.value
+    .new(telescope_opts, {
+      prompt_title = "telescope-agda-symbols",
+      finder = finders.new_table({
+        results = results,
+        entry_maker = function(result)
+          return {
+            value = result.value,
+            name = result.name,
+            key = result.key,
+            display = make_display,
+            ordinal = result.key,
+          }
+        end,
+      }),
+      sorter = conf.generic_sorter(telescope_opts),
+      attach_mappings = function(prompt_bufnr, _)
+        actions.select_default:replace(function()
+          actions.close(prompt_bufnr)
+          local selection = action_state.get_selected_entry()
+          local output = selection.value
+          vim.schedule(function()
+            vim.cmd([[startinsert]])
             vim.api.nvim_put({ output }, "", false, true)
           end)
-          return true
-        end,
-      })
-      :find()
+        end)
+        return true
+      end,
+    })
+    :find()
 end
 
 --M.search()
