@@ -58,6 +58,7 @@ M.search = function(telescope_opts)
           local output = selection.value
           vim.schedule(function()
             vim.cmd([[startinsert]])
+            vim.cmd([[normal! l]])
             vim.api.nvim_put({ output }, "", false, true)
           end)
         end)
