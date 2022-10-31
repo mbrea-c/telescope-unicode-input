@@ -19,7 +19,7 @@ local sample_unicode = {
 
 M.search = function(telescope_opts)
   telescope_opts = telescope_opts or {}
-  local initial_mode = vim.fn.mode()
+  local initial_cursor = vim.api.nvim_win_get_cursor(0)
   local displayer = entry_display.create({
     separator = " ",
     items = {
@@ -58,7 +58,7 @@ M.search = function(telescope_opts)
           local output = selection.value
           vim.schedule(function()
             vim.cmd([[startinsert]])
-            vim.cmd([[normal! l]])
+            vim.api.nvim_win_set_cursor(0, initial_cursor)
             vim.api.nvim_put({ output }, "", false, true)
           end)
         end)
